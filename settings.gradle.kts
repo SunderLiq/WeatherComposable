@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "appWeatherComposable"
 include(":app")
- 
+include(":volley")
