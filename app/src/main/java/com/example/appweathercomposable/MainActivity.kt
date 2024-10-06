@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
 import com.example.appweathercomposable.screens.BackGround
+import com.example.appweathercomposable.screens.ListItem
 import com.example.appweathercomposable.screens.MainCard
 import com.example.appweathercomposable.screens.TabLayout
 import com.example.appweathercomposable.ui.theme.AppWeatherComposableTheme
@@ -21,6 +22,7 @@ class MainActivity : ComponentActivity() {
                 Column {
                     MainCard()
                     TabLayout()
+                    ListItem()
                 }
             }
         }

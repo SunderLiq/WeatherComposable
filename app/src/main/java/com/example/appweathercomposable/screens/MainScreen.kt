@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -29,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.appweathercomposable.R
-import com.example.appweathercomposable.ui.theme.Purple40
+import com.example.appweathercomposable.ui.theme.PurpleGrey40
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
@@ -60,7 +61,7 @@ fun MainCard() {
             elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
             shape = RoundedCornerShape(2.dp),
             colors = CardDefaults.cardColors(
-                containerColor = Purple40,
+                containerColor = PurpleGrey40,
                 contentColor = Color.White
             )
         )
@@ -144,7 +145,7 @@ fun TabLayout() {
                     Modifier.pagerTabIndicatorOffset(pagerState, pos)
                 )
             },
-            backgroundColor = Purple40,
+            backgroundColor = PurpleGrey40,
             contentColor = Color.White
         ) {
             tabList.forEachIndexed { index, text ->
@@ -162,8 +163,12 @@ fun TabLayout() {
             }
         }
         HorizontalPager(count = tabList.size, state = pagerState, modifier = Modifier.weight(1f)) {
-//            index ->
-
+            index ->
+            LazyColumn (Modifier.fillMaxSize()) {
+                items(15){
+                    ListItem()
+                }
+            }
         }
     }
 }
