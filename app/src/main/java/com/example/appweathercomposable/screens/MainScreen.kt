@@ -91,7 +91,7 @@ fun MainCard() {
                             .padding(top = 5.dp)
                     )
                 }
-                Text(text = "Донецк", style = TextStyle(fontSize = 30.sp))
+                Text(text = "city", style = TextStyle(fontSize = 30.sp))
                 Text(
                     text = "36.4°",
                     style = TextStyle(fontSize = 50.sp),
