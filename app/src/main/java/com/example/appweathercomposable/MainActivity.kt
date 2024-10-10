@@ -22,7 +22,6 @@ class MainActivity : ComponentActivity() {
                 Column {
                     MainCard()
                     TabLayout()
-                    ListItem()
                 }
             }
         }
