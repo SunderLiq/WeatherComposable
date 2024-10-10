@@ -17,6 +17,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -91,7 +92,7 @@ fun MainCard() {
                             .padding(top = 5.dp)
                     )
                 }
-                Text(text = "city", style = TextStyle(fontSize = 30.sp))
+                Text(text = "Donetsk", style = TextStyle(fontSize = 30.sp))
                 Text(
                     text = "36.4°",
                     style = TextStyle(fontSize = 50.sp),
@@ -130,7 +131,7 @@ fun MainCard() {
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun TabLayout() {
+fun TabLayout(daysList: MutableState<List<WeatherModel>>) {
     val tabList = listOf("Почасовой", "По дням")
     val pagerState = com.google.accompanist.pager.rememberPagerState()
     val tabIndex = pagerState.currentPage
@@ -168,28 +169,7 @@ fun TabLayout() {
             _ ->
             LazyColumn (Modifier.fillMaxSize()) {
                 itemsIndexed(
-                    listOf(
-                        WeatherModel(
-                            "Donetsk",
-                            "16:00",
-                            "18.3",
-                            "Облачно",
-                            "//cdn.weatherapi.com/weather/64x64/day/113.png",
-                            "",
-                            "",
-                            ""
-                        ),
-                        WeatherModel(
-                            "Donetsk",
-                            "10.10.2024",
-                            "",
-                            "Облачно",
-                            "//cdn.weatherapi.com/weather/64x64/day/113.png",
-                            "21.3",
-                            "17.2",
-                            ""
-                        )
-                    )
+                    daysList.value
                 ){
                     _, item -> ListItem(item)
                 }
