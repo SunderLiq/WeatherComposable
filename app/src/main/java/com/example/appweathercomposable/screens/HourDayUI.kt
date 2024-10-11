@@ -39,7 +39,7 @@ fun ListItem (item: WeatherModel){
             Column (verticalArrangement = Arrangement.SpaceBetween){
                 Text(text = item.time, style = TextStyle(fontSize = 18.sp))
             }
-            Text(text = item.currentTemp.ifEmpty { "${item.minTemp.substringBefore(".")} / ${item.maxTemp.substringBefore(".")}" }, style = TextStyle(fontSize = 25.sp))
+            Text(text = item.currentTemp.ifEmpty { "${item.minTemp.substringBefore(".").isPositive()}${item.minTemp.substringBefore(".")} / ${item.minTemp.substringBefore(".").isPositive()}${item.maxTemp.substringBefore(".")}" }, style = TextStyle(fontSize = 25.sp))
             AsyncImage(
                 model = "https:${item.icon}",
                 contentDescription = "Current weather icon",
@@ -49,4 +49,9 @@ fun ListItem (item: WeatherModel){
             )
         }
     }
+}
+
+fun String.isPositive(): String {
+    return if (this.toInt() > 0) "+"
+    else ""
 }
