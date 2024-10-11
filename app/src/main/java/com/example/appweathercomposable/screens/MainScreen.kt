@@ -27,7 +27,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -51,9 +50,8 @@ fun BackGround() {
     )
 }
 
-@Preview(showBackground = true)
 @Composable
-fun MainCard() {
+fun MainCard(selectedDay: MutableState<WeatherModel>) {
     Column(
         modifier = Modifier
             .padding(top = 60.dp, start = 10.dp, end = 10.dp),
@@ -81,25 +79,25 @@ fun MainCard() {
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "03.10.2024 23:30",
+                        text = selectedDay.value.time,
                         style = TextStyle(fontSize = 15.sp)
                     )
                     AsyncImage(
-                        model = "https://cdn.weatherapi.com/weather/64x64/night/113.png",
-                        contentDescription = "night_icon",
+                        model = "https:${selectedDay.value.icon}",
+                        contentDescription = "selected forecast icon",
                         modifier = Modifier
                             .size(50.dp)
                             .padding(top = 5.dp)
                     )
                 }
-                Text(text = "Donetsk", style = TextStyle(fontSize = 30.sp))
+                Text(text = selectedDay.value.city, style = TextStyle(fontSize = 30.sp))
                 Text(
-                    text = "36.4°",
+                    text = selectedDay.value.currentTemp + " °C",
                     style = TextStyle(fontSize = 50.sp),
                     modifier = Modifier.padding(top = 10.dp)
                 )
                 Text(
-                    text = "Солнечно",
+                    text = selectedDay.value.condition,
                     style = TextStyle(fontSize = 18.sp),
                     modifier = Modifier.padding(top = 2.dp)
                 )
@@ -115,7 +113,7 @@ fun MainCard() {
                             .size(30.dp)
                             .padding(top = 5.dp)
                     )
-                    Text(text = "25.5° / 37.2°")
+                    Text(text = "${selectedDay.value.minTemp.substringBefore(".")} / ${selectedDay.value.maxTemp.substringBefore(".")}°C")
                     Icon(
                         painterResource(id = R.drawable.refresh_icon_white),
                         contentDescription = "Refresh_button",

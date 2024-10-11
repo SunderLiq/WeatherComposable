@@ -28,11 +28,16 @@ class MainActivity : ComponentActivity() {
             val daysList = remember {
                 mutableStateOf(listOf<WeatherModel>())
             }
-            getData("Donetsk", this, daysList)
+            val selectedDay = remember {
+                mutableStateOf(WeatherModel(
+                    "", "", "1.0", "", "", "1.0", "1.0", ""
+                ))
+            }
+            getData("Murmansk", this, daysList, selectedDay)
             AppWeatherComposableTheme {
                 BackGround()
                 Column {
-                    MainCard()
+                    MainCard(selectedDay)
                     TabLayout(daysList)
                 }
             }
@@ -40,7 +45,8 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-private fun getData (city: String, context: Context, daysList: MutableState<List<WeatherModel>>){
+private fun getData (city: String, context: Context,
+                     daysList: MutableState<List<WeatherModel>>, selectedDay: MutableState<WeatherModel>){
     val url = "https://api.weatherapi.com/v1/forecast.json?key=" +
             API_KEY +
             "&q=" +
@@ -53,6 +59,7 @@ private fun getData (city: String, context: Context, daysList: MutableState<List
         {
             response ->
             val list = getForecastByDays(response)
+            selectedDay.value = list[0]
             daysList.value = list
         },
         {

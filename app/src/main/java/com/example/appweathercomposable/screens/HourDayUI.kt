@@ -38,9 +38,8 @@ fun ListItem (item: WeatherModel){
             verticalAlignment = Alignment.CenterVertically){
             Column (verticalArrangement = Arrangement.SpaceBetween){
                 Text(text = item.time, style = TextStyle(fontSize = 18.sp))
-                Text(text = item.condition, modifier = Modifier.padding(top = 5.dp), style = TextStyle(fontSize = 15.sp))
             }
-            Text(text = item.currentTemp.ifEmpty { "${item.maxTemp} / ${item.minTemp}" }, style = TextStyle(fontSize = 25.sp))
+            Text(text = item.currentTemp.ifEmpty { "${item.minTemp.substringBefore(".")} / ${item.maxTemp.substringBefore(".")}" }, style = TextStyle(fontSize = 25.sp))
             AsyncImage(
                 model = "https:${item.icon}",
                 contentDescription = "Current weather icon",
