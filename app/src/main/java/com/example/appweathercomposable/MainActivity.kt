@@ -14,12 +14,14 @@ import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.appweathercomposable.data.WeatherModel
 import com.example.appweathercomposable.screens.BackGround
+import com.example.appweathercomposable.screens.DialogSearch
 import com.example.appweathercomposable.screens.MainCard
 import com.example.appweathercomposable.screens.TabLayout
 import com.example.appweathercomposable.ui.theme.AppWeatherComposableTheme
 import org.json.JSONObject
 
 const val API_KEY = "bbff4996a1fe483486b184236240110"
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,25 +30,40 @@ class MainActivity : ComponentActivity() {
             val daysList = remember {
                 mutableStateOf(listOf<WeatherModel>())
             }
-            val selectedDay = remember {
-                mutableStateOf(WeatherModel(
-                    "", "", "1.0", "", "", "1.0", "1.0", ""
-                ))
+            val fieldState = remember {
+                mutableStateOf(false)
             }
-            getData("Murmansk", this, daysList, selectedDay)
+            val selectedDay = remember {
+                mutableStateOf(
+                    WeatherModel(
+                        "", "", "1.0", "", "", "1.0", "1.0", ""
+                    )
+                )
+            }
+            if (fieldState.value) DialogSearch(fieldState, onSubmit = {
+                getData(it, this, daysList, selectedDay)
+            })
+            getData("Donetsk", this, daysList, selectedDay)
             AppWeatherComposableTheme {
                 BackGround()
                 Column {
-                    MainCard(selectedDay)
-                    TabLayout(daysList)
+                    MainCard(selectedDay, sync = {
+                        getData("Donetsk", this@MainActivity, daysList, selectedDay)
+                    },
+                        search = {
+                            fieldState.value = true
+                        })
+                    TabLayout(daysList, selectedDay)
                 }
             }
         }
     }
 }
 
-private fun getData (city: String, context: Context,
-                     daysList: MutableState<List<WeatherModel>>, selectedDay: MutableState<WeatherModel>){
+private fun getData(
+    city: String, context: Context,
+    daysList: MutableState<List<WeatherModel>>, selectedDay: MutableState<WeatherModel>
+) {
     val url = "https://api.weatherapi.com/v1/forecast.json?key=" +
             API_KEY +
             "&q=" +
@@ -56,8 +73,7 @@ private fun getData (city: String, context: Context,
     val sRequest = StringRequest(
         com.android.volley.Request.Method.GET,
         url,
-        {
-            response ->
+        { response ->
             val list = getForecastByDays(response)
             selectedDay.value = list[0]
             daysList.value = list
@@ -69,7 +85,7 @@ private fun getData (city: String, context: Context,
     queue.add(sRequest)
 }
 
-private fun getForecastByDays (response: String): List<WeatherModel> {
+private fun getForecastByDays(response: String): List<WeatherModel> {
     if (response.isEmpty()) return listOf()
     val list = ArrayList<WeatherModel>()
     val mainObject = JSONObject(response)
