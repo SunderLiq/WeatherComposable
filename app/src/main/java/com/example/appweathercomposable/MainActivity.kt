@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
                 mutableStateOf(listOf<WeatherModel>())
             }
             val fieldState = remember {
-                mutableStateOf(false)
+                mutableStateOf(true)
             }
             val selectedDay = remember {
                 mutableStateOf(
@@ -43,12 +43,12 @@ class MainActivity : ComponentActivity() {
             if (fieldState.value) DialogSearch(fieldState, onSubmit = {
                 getData(it, this, daysList, selectedDay)
             })
-            getData("Donetsk", this, daysList, selectedDay)
+            getData("", this, daysList, selectedDay)
             AppWeatherComposableTheme {
                 BackGround()
                 Column {
                     MainCard(selectedDay, sync = {
-                        getData("Donetsk", this@MainActivity, daysList, selectedDay)
+                        getData("", this@MainActivity, daysList, selectedDay)
                     },
                         search = {
                             fieldState.value = true
