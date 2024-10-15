@@ -21,6 +21,7 @@ import com.example.appweathercomposable.ui.theme.AppWeatherComposableTheme
 import org.json.JSONObject
 
 const val API_KEY = "bbff4996a1fe483486b184236240110"
+var curCity = "Donetsk"
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +32,7 @@ class MainActivity : ComponentActivity() {
                 mutableStateOf(listOf<WeatherModel>())
             }
             val fieldState = remember {
-                mutableStateOf(true)
+                mutableStateOf(false)
             }
             val selectedDay = remember {
                 mutableStateOf(
@@ -43,12 +44,12 @@ class MainActivity : ComponentActivity() {
             if (fieldState.value) DialogSearch(fieldState, onSubmit = {
                 getData(it, this, daysList, selectedDay)
             })
-            getData("", this, daysList, selectedDay)
+            getData(curCity, this, daysList, selectedDay)
             AppWeatherComposableTheme {
                 BackGround()
                 Column {
                     MainCard(selectedDay, sync = {
-                        getData("", this@MainActivity, daysList, selectedDay)
+                        getData(curCity, this@MainActivity, daysList, selectedDay)
                     },
                         search = {
                             fieldState.value = true
